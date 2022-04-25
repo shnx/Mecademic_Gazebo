@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="https://ros.org/wiki/xacro">
+  <!-- Here we define the 2 parameters of the macro -->
+  <xacro:macro name="tool" params="prefix connected_to">
+    <!-- Create a fixed joint with a parameterized name. -->
+    <joint name="${prefix}tool_joint" type="fixed">
+      <!-- The parent link must be read from the robot model it is attached to. -->
+      <parent link="${connected_to}"/>
+      <child link="${prefix}tool"/>
+      <!-- The tool is directly attached to the flange. -->
+      <origin rpy="0 0 0" xyz="-0.04 -0.110 -0.071"/>
+          <axis xyz="0 0 0" />
+    <limit effort="10.0" velocity="2.61799" lower="-3.05433" upper="3.05433" />
+    </joint>
+    <link name="${prefix}tool">
+      <visual>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <mesh filename="package://meca_with_tool/meshes/visual/Tool_header.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- The path to the collision meshes in the package. -->
+          <mesh filename="package://meca_with_tool/meshes/collision/Tool_header_collision.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- TCP frame -->
+    <joint name="${prefix}tcp_joint" type="prismatic">
+      <origin xyz="0.073 0.07 0.08" rpy="3.14159 0 0"/>
+      <parent link="${prefix}tool"/>
+      <child link="${prefix}tcp"/>
+          <axis xyz=" 0 1 0" />
+    <limit effort="10.0" velocity="0.60" lower="0.000" upper="0.070" />
+    </joint>
+    <link name="${prefix}tcp">
+    
+      <visual>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <mesh filename="package://meca_with_tool/meshes/visual/tcp.dae" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- The path to the collision meshes in the package. -->
+          <mesh filename="package://meca_with_tool/meshes/collision/tcp.stl" scale="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+    </link>
+
+  </xacro:macro>
+</robot>

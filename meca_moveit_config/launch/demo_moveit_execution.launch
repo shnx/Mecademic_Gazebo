@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_gui" default="false" />
+  <rosparam command="load" file="$(find meca_moveit_config)/config/joint_names.yaml"/>
+ 
+  <!-- load the robot_description parameter before launching ROS-I nodes -->
+  <include file="$(find meca_moveit_config)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="true" />
+  </include>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen"  unless="$(arg use_gui)">
+      <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    </node>
+    <!-- If desired, a GUI version is available allowing to move the simulated robot around manually
+         This corresponds to moving around the real robot without the use of MoveIt. -->
+<node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen" if="$(arg use_gui)" >
+      <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    </node>
+
+
+
+  <include file="$(find meca_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="rviz_config" value="$(find meca_moveit_config)/launch/moveit.rviz"/>
+  </include>
+  
+    <include file="$(find meca_moveit_config)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+  
+</launch>

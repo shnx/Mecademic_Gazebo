@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: meca_with_tool
+    relative_path: urdf/meca_with_tool.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/meca_with_tool.srdf
+  CONFIG:
+    author_name: Shannak
+    author_email: mohammedshannak@gmail.com
+    generated_timestamp: 1646337422

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://ros.org/wiki/xacro" name="meca_with_tool">
+
+  <!-- ur5 -->
+  <xacro:include filename="$(find meca_with_tool)/urdf/meca_500_r3.urdf.xacro" />
+  <!-- end-effector -->
+  <xacro:include filename="$(find meca_with_tool)/urdf/tool.xacro" />
+
+  <!-- ur5 -->
+  <!-- The ur5 xacro must be included with passing parameters -->
+
+  <!-- end-effector -->
+  <!-- Here we include the end-effector by setting the parameters -->
+  <!-- TODO: check end-effector link name of robot -->
+  <xacro:tool prefix="" connected_to="meca_axis_6_link"/>
+
+  <!-- define the ur5's position and orientation in the world coordinate system -->
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link="meca_base_link" /> <!-- TODO: check base_link name of robot -->
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+
+</robot>
